@@ -1,156 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 
-import logo from './assets/memoria.png';
+// Import questions and mappings for character generation
+import questions from './utilities/questions'; 
+import raceMapping from './utilities/raceMapping';
+import originMapping from './utilities/originMapping'; 
+import focusMapping from './utilities/focusMapping';
 
-const questions = [
-  { id: 1, question: 'What is your Characters name?', type: 'text' },
-  {
-    id: 2,
-    question: 'What Race would you like to play?',
-    type: 'select',
-    options: [
-      'Badgurix',
-      'Augtens',
-      'Asura',
-      'Archs',
-      'Antaleer',
-      'Ikaw',
-      'Gira',
-      'Isegun',
-      'Glowhraun',
-      'Telecliss',
-      'Hwamps',
-      'Giants',
-      'Taurava',
-      'Warve',
-      'Selvan',
-      'Namors',
-      'Elvitch Spirit Rider',
-      'Taotum',
-      'Vulturan',
-      'Ryderz',
-      'Lightling',
-      'Musculus',
-      'Gemborne',
-      'Elves',
-      'Larve',
-      'Ruetree',
-      'Eltic',
-      'Viporian',
-      'Crimrik',
-      'Mirrormen',
-      'Froll',
-      'Peaton',
-      'Roostins',
-      'Dragonaire',
-      'Dwarves',
-      'Humans',
-      'Contruct',
-      'Panthari',
-      'Redhorn',
-      'Minotaur',
-      'Laotu',
-      'Turtan',
-      'Djinni',
-      'Foxum',
-      'Havgin',
-      'Ramiel',
-      'Centorc',
-      'Tunkles',
-      'Denbark',
-      'Owlec',
-      'Jedanako',
-      'Torro',
-      'Gorak',
-      'Caneis',
-      'Spelorian',
-      'Troll',
-      'Q',
-      'Soulless',
-      'Demon',
-      'Zarut',
-      'Otorc',
-      'Brinx',
-      'Toric',
-      'Duogoblin',
-      'Melanni',
-      'Gonjic',
-      'Jaddehb',
-      'Polkans',
-      'Zadnaut',
-      'Skorc',
-      'Delvian',
-      'Tib',
-      'Orc',
-      'Jackal',
-      'Drowland',
-      'Manticlus',
-      'Octubian',
-      'Dawsp',
-      'Boon',
-      'Trinon',
-      'Shifter',
-      'Thyst',
-      'Wereman',
-      'Ivotien',
-      'Mannenite',
-      'Dragon',
-      'Oakrels',
-      'Felynx',
-      'Treeton',
-      'Goblin',
-      'Blood Elf',
-      'Cuth',
-      'Magelv',
-      'Bisanu',
-      'Potec',
-      'Banda',
-      'Cabat',
-      'Cossakus',
-    ],
-  },
-  { id: 3, question: 'What is your Characters age?', type: 'number' },
-  {
-    id: 4,
-    question: 'What is your Characters Origin?',
-    type: 'select',
-    options: [
-      'Divine',
-      'Eye',
-      'Mind',
-      'Body',
-      'Husk - *Evil only',
-      'Insane - *Evil only',
-    ],
-  },
-  {
-    id: 5,
-    question: 'What is your Focus?',
-    type: 'select',
-    options: [
-      'Light',
-      'Teleportation',
-      'Fire',
-      'Air',
-      'Mind',
-      'Body',
-      'Lightning',
-      'Health',
-      'Water',
-    ],
-  },
-  { id: 6, question: 'What is your Characters goal?', type: 'text' },
-  { id: 7, question: 'What is your Characters flaw?', type: 'text' },
-  { id: 8, question: 'What is your Characters strength?', type: 'text' },
-];
+// Import assets
+import logo from './assets/memoria.png';
+import { GrPowerReset } from "react-icons/gr";
 
 function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
-
   const currentQuestion = questions[currentQuestionIndex];
 
+  const [currentRace, setCurrentRace] = useState('');
+  const [currentOrigin, setCurrentOrigin] = useState('');
+  const [currentFocus, setCurrentFocus] = useState('');
+  const [character, setCharacter] = useState({});
+
+  // Handle navigation between questions
   const handleNext = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
@@ -159,7 +30,57 @@ function App() {
     setCurrentQuestionIndex(currentQuestionIndex - 1);
   };
 
-  const generatePrintout = () => {
+  const handleReset = () => {
+    setCurrentQuestionIndex(0);
+    setAnswers({});
+    setCurrentRace('');
+    setCurrentOrigin('');
+    setCurrentFocus('');
+  }
+
+  // Generate character based on answers
+  
+
+  const generateCharacter = () => {
+    const character = {
+
+      name: answers[1],
+      race: answers[2],
+      age: answers[3],
+      origin: answers[4],
+      focus: answers[5],
+      goal: answers[6],
+      flaw: answers[7],
+      strength: answers[8],
+      
+    };
+
+    setCharacter(character); // Store the character object in state
+
+    if (character && character.race && raceMapping[character.race]) {
+      setCurrentRace(raceMapping[character.race]);
+    } 
+
+    if (character && character.origin && originMapping[character.origin]) {
+      setCurrentOrigin(originMapping[character.origin]);
+    }
+
+    if (character && character.focus && focusMapping[character.focus]) {
+      setCurrentFocus(focusMapping[character.focus]);
+    }
+
+
+    alert('Generating Character......click ok to Print!');
+    generatePrintout(character); // Call the printout function with the character object
+    console.log('Character:', character);
+  };
+
+
+ 
+// Generate printout of character build
+  // This function creates a printout of the character build based on the answers provided by the user.
+
+  const generatePrintout = (character) => {
     const printoutContent = Object.entries(answers).map(
       ([questionId, answer]) => {
         const question = questions.find(
@@ -174,41 +95,67 @@ function App() {
       }
     );
 
+    const characterDetails = `
+          <li> <strong>Character Build:</strong> </li>
+         <li> <strong>Name:</strong> ${character.name} </li>
+          <li> <strong>Race:</strong> ${currentRace} </li>
+          <li> <strong>Age:</strong> ${character.age} </li>
+          <li> <strong>Origin:</strong> ${currentOrigin} </li>
+          <li> <strong>Focus:</strong> ${currentFocus} </li>
+         <li> <strong>Goal:</strong> ${character.goal} </li>
+         <li> <strong>Flaw:</strong> ${character.flaw} </li>
+         <li> <strong>Strength:</strong> ${character.strength} </li>
+    `;
+
+
+
+
+
     const printElement = document.createElement('div');
     printElement.innerHTML = `
-    <html>
-      <head>
-        <title>Printout</title>
-        <style>
-          /* Add any necessary print styles here */
-          body { font-family: sans-serif; }
-          p { margin-bottom: 5px; }
-        </style>
-      </head>
-      <body>
-        <h1>Your Character Breakdown</h1>
-        ${printoutContent.join('')} 
-      </body>
-    </html>
-  `;
+      <html>
+        <head>
+          <title>Memoria Character Builder</title>
+          <style>
+            /* Add your print styles here */
+            body { font-family: Arial, sans-serif;
+            }
+            h1 { color: #f4f4f4; }
+            h1 { text-align: center; }
+            img { width: 300px; height: auto; display: block; margin: 0 auto; }
+            div { display: flex; flex-direction: row align-items: center; }
+            .container { padding: 20px; }
+            /* ... other styles ... */
+          </style>
+        </head>
+        <body>
+          <h1>Character Build Cheatsheet</h1>
+          <img className="logo" src=${logo} alt="Memoria Logo" />
+          <div>
+          <ul>
+          ${printoutContent.join('')}
+          </ul>
+          <ul>
+          ${characterDetails}
+          </ul>
+          </div>
 
-    // Open a new window for printing
+        </body>
+      </html>
+    `;
+ 
     const printWindow = window.open('', '_blank');
-
-    // Write the print content to the new window's document
     printWindow.document.write(printElement.innerHTML);
-
     printWindow.document.close();
     printWindow.focus();
-
-    // Delay the print command slightly to ensure content is loaded
+ 
     setTimeout(() => {
       printWindow.print();
     }, 200);
   };
 
   return (
-    <div>
+    <div className='container'>
       <img className="logo" src={logo} alt="Memoria Logo" />
 
       {/* Display current question */}
@@ -250,11 +197,14 @@ function App() {
       )}
 
       {/* Display current answer */}
-      <div className="questionAnswer">
+
+     {/*  <div className="questionAnswer">
         <p>
           <strong>Your Answer:</strong> {answers[currentQuestion.id] || ''}
         </p>
       </div>
+
+     
 
       {/* Navigation buttons */}
       <div>
@@ -264,12 +214,18 @@ function App() {
         {currentQuestionIndex < questions.length - 1 && (
           <button onClick={handleNext}>Next</button>
         )}
-        <button onClick={() => setAnswers({})}>Reset</button>
+                {currentQuestionIndex > 0 && (
+
+        <button className='alert' onClick={handleReset}>
+          <GrPowerReset /> 
+        </button>
+        )}
       </div>
+                
 
       {/* Generate printout button */}
       {currentQuestionIndex === questions.length - 1 && (
-        <button onClick={generatePrintout}>Generate Printout</button>
+        <button onClick={generateCharacter}>Generate Printout</button>
       )}
     </div>
   );
