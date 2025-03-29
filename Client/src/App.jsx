@@ -16,9 +16,7 @@ function App() {
   const [answers, setAnswers] = useState({});
   const currentQuestion = questions[currentQuestionIndex];
 
-  const [currentRace, setCurrentRace] = useState('');
-  const [currentOrigin, setCurrentOrigin] = useState('');
-  const [currentFocus, setCurrentFocus] = useState('');
+
   const [character, setCharacter] = useState({});
 
   // Handle navigation between questions
@@ -57,17 +55,6 @@ function App() {
 
     setCharacter(character); // Store the character object in state
 
-    if (character && character.race && raceMapping[character.race]) {
-      setCurrentRace(raceMapping[character.race]);
-    } 
-
-    if (character && character.origin && originMapping[character.origin]) {
-      setCurrentOrigin(originMapping[character.origin]);
-    }
-
-    if (character && character.focus && focusMapping[character.focus]) {
-      setCurrentFocus(focusMapping[character.focus]);
-    }
 
 
     alert('Generating Character......click ok to Print!');
@@ -96,17 +83,54 @@ function App() {
     );
 
     const characterDetails = `
-          <li> <strong>Character Build:</strong> </li>
-         <li> <strong>Name:</strong> ${character.name} </li>
-          <li> <strong>Race:</strong> ${currentRace} </li>
-          <li> <strong>Age:</strong> ${character.age} </li>
-          <li> <strong>Origin:</strong> ${currentOrigin} </li>
-          <li> <strong>Focus:</strong> ${currentFocus} </li>
-         <li> <strong>Goal:</strong> ${character.goal} </li>
-         <li> <strong>Flaw:</strong> ${character.flaw} </li>
-         <li> <strong>Strength:</strong> ${character.strength} </li>
+          <p> <strong>${character.name}</strong> is a ${character.age} year old member of the <strong>${character.race}</strong> race. </p>
+          <p> With the <strong>${character.origin} Origin</strong> and the chosen <strong> Focus of ${character.focus}</strong> you have the potential to be a migthy hero. </p>
+          <p> ${character.name} has a goal of ${character.goal} and a character flaw of ${character.flaw}, but has the character strength of ${character.strength} to balance it out. </p>    
     `;
 
+    const raceBreakdown = `
+
+      <ul>
+        <li>Racial Bonus:_______ </li>
+        <li>Racial Ability:_______ </li>
+        <li>Racial Negative:_______ </li>
+        <li>Level Adjustment:_______ </li>
+        <li>HP Bonus:_______ </li>
+        <li>Starting Jinx:_______ </li>
+        <li>Attack Prowress:_______ </li>
+        <li>Defense Prowress:_______ </li>
+      </ul>
+    `
+
+    const originBreakdown = `
+
+      <ul>
+        <li>Starting Package: ______________________________</li>
+        <li>Weapon Proficiency: ____________________________</li>
+      </ul>
+    `
+
+    const focusBreakdown = `
+      <p>Start by Picking 2 Powers. You can choose any power you meet the prerequisites under the
+      Focus of your choice.</p>
+    `
+
+    const finalDetails = `
+      
+      <ul>
+        <li><strong>HP:</strong>_______ Based off of D20 plus applicable Racial Bonus</li>
+        <li><strong>Movement:</strong> Land – 5, Air – 7, and Water – 2</li>
+        <li><strong>Stats:</strong> 15 points to assign as you see fit</li>
+        (Average human has a 2 in each category) 
+          <ol>
+            <li>Strength – Added to Melee damage </li>
+            <li>Reflex – Added to Ranged damage</li>
+            <li>Fortitude – Damage Reduction / Mind Altering Effects</li>
+            <li>Intelligence – Added to Magic damage </li>
+            <li>Charisma – Bonus to all diplomacy, luck, and seduce checks (Percentiles) </li>
+            </ol>
+            </ul>
+      `
 
 
 
@@ -116,29 +140,38 @@ function App() {
       <html>
         <head>
           <title>Memoria Character Builder</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=MedievalSharp&display=swap" rel="stylesheet">
           <style>
             /* Add your print styles here */
-            body { font-family: Arial, sans-serif;
+            body { font-family: MedievalSharp, cursive;
             }
             h1 { color: #f4f4f4; }
-            h1 { text-align: center; }
+            h2 { text-align: center; }
             img { width: 300px; height: auto; display: block; margin: 0 auto; }
+            li { font-size: 14px;}
             div { display: flex; flex-direction: row align-items: center; }
             .container { padding: 20px; }
             /* ... other styles ... */
           </style>
         </head>
         <body>
-          <h1>Character Build Cheatsheet</h1>
           <img className="logo" src=${logo} alt="Memoria Logo" />
-          <div>
-          <ul>
-          ${printoutContent.join('')}
-          </ul>
-          <ul>
+          <h2>⚔ Character Build Cheatsheet ⚔</h2>
           ${characterDetails}
-          </ul>
+
+          <strong>Race and Origin</strong>
+         <div>
+          ${raceBreakdown}
+          ${originBreakdown}
           </div>
+
+          <strong>Focus Power</strong>
+          ${focusBreakdown}
+
+          <strong>HP, Movement, and Stats</strong>
+          ${finalDetails}
 
         </body>
       </html>
