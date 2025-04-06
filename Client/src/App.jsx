@@ -1,22 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
+
 // Import questions and mappings for character generation
 import questions from './utilities/questions'; 
-import raceMapping from './utilities/raceMapping';
-import originMapping from './utilities/originMapping'; 
-import focusMapping from './utilities/focusMapping';
+import raceData from './utilities/racedata';
+import originData from './utilities/origindata';
 
 // Import assets
 import logo from './assets/memoria.png';
 import { GrPowerReset } from "react-icons/gr";
+
+//import race pictures
+import Telecliss from "./assets/Races/Telecliss.jpg";
+import Cabat from "./assets/Races/Cabat.jpg";
 
 function App() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const currentQuestion = questions[currentQuestionIndex];
 
-
+  const [logoPic, setLogoPic] = useState(Telecliss);
+  const [currentRace, setCurrentRace] = useState('');
+  const [currentOrigin, setCurrentOrigin] = useState('');
+  const [currentFocus, setCurrentFocus] = useState('');
   const [character, setCharacter] = useState({});
 
   // Handle navigation between questions
@@ -40,28 +47,43 @@ function App() {
   
 
   const generateCharacter = () => {
+    const race = raceData[answers[2]] ? raceData[answers[2]] : {}; // Get race data, default to {}
+    const origin = originData[answers[4]] ? originData[answers[4]] : {}; // Get origin data, default to {}
+    const randomHP = Math.floor(Math.random() * (20 - 5 + 1)) + 5; // HP between 5 and 20
+  
     const character = {
-
       name: answers[1],
       race: answers[2],
+      raceDescription: race.raceDescription || "N/A",  // Get descriptions, etc.
+      racialBonus: race.racialBonus || "N/A",
+      racialAbility: race.racialAbility || "N/A",
+      racialNegative: race.racialNegative || "N/A",
+      hpBonus: race.hpBonus || "N/A",
+      attackProwess: race.attackProwess || "N/A",
+      defenseProwess: race.defenseProwess || "N/A",
+      startingJinx: race.startingJinx || "N/A",
+      startingLevel: race.startingLevel || "N/A",
       age: answers[3],
       origin: answers[4],
+      originDescription: origin.originDescription || "N/A",
+      levelAbility: origin.levelAbility || "N/A",
+      startingPackage: origin.startingPackage || "N/A",
+      weaponProficiency: origin.weaponProficiency || "N/A",
       focus: answers[5],
       goal: answers[6],
       flaw: answers[7],
       strength: answers[8],
-      
+      hp: randomHP,
+      logo: answers[2],
     };
-
-    setCharacter(character); // Store the character object in state
-
-
-
+  
+    setCharacter(character);
+    setLogoPic(answers[2]) // Store the character object in state
+  
     alert('Generating Character......click ok to Print!');
-    generatePrintout(character); // Call the printout function with the character object
+    generatePrintout(character);
     console.log('Character:', character);
   };
-
 
  
 // Generate printout of character build
@@ -70,121 +92,96 @@ function App() {
   const generatePrintout = (character) => {
     const printoutContent = Object.entries(answers).map(
       ([questionId, answer]) => {
-        const question = questions.find(
-          (q) => q.id === parseInt(questionId)
-        ).question;
-
-        return `<div className='questionAnswer' key="${questionId}">
-          <p>
-            <strong>${question}:</strong> ${answer}
-          </p>
-        </div>`;
+        const questionObj = questions.find((q) => q.id === parseInt(questionId));
+        const question = questionObj ? questionObj.question : "Unknown Question";
+  
+        return `
+          <div className='questionAnswer' key="${questionId}">
+            <p>
+              <strong>${question}:</strong> ${answer}
+            </p>
+          </div>
+        `;
       }
     );
-
+  
     const characterDetails = `
-          <p> <strong>${character.name}</strong> is a ${character.age} year old member of the <strong>${character.race}</strong> race. </p>
-          <p> With the <strong>${character.origin} Origin</strong> and the chosen <strong> Focus of ${character.focus}</strong> you have the potential to be a migthy hero. </p>
-          <p> ${character.name} has a goal of ${character.goal} and a character flaw of ${character.flaw}, but has the character strength of ${character.strength} to balance it out. </p>    
-    `;
-
-    const raceBreakdown = `
-
-      <ul>
-        <li>Racial Bonus:_______ </li>
-        <li>Racial Ability:_______ </li>
-        <li>Racial Negative:_______ </li>
-        <li>Level Adjustment:_______ </li>
-        <li>HP Bonus:_______ </li>
-        <li>Starting Jinx:_______ </li>
-        <li>Attack Prowress:_______ </li>
-        <li>Defense Prowress:_______ </li>
-      </ul>
-    `
-
-    const originBreakdown = `
-
-      <ul>
-        <li>Starting Package: ______________________________</li>
-        <li>Weapon Proficiency: ____________________________</li>
-      </ul>
-    `
-
-    const focusBreakdown = `
-      <p>Start by Picking 2 Powers. You can choose any power you meet the prerequisites under the
-      Focus of your choice.</p>
-    `
-
-    const finalDetails = `
-      
-      <ul>
-        <li><strong>HP:</strong>_______ Based off of D20 plus applicable Racial Bonus</li>
-        <li><strong>Movement:</strong> Land – 5, Air – 7, and Water – 2</li>
-        <li><strong>Stats:</strong> 15 points to assign as you see fit</li>
-        (Average human has a 2 in each category) 
-          <ol>
-            <li>Strength – Added to Melee damage </li>
-            <li>Reflex – Added to Ranged damage</li>
-            <li>Fortitude – Damage Reduction / Mind Altering Effects</li>
-            <li>Intelligence – Added to Magic damage </li>
-            <li>Charisma – Bonus to all diplomacy, luck, and seduce checks (Percentiles) </li>
-            </ol>
+    
+        <ul class="character-details">
+        <div>
+        <img class="logo" src=${logoPic} alt="Race Logo" />
+        <ul>
+            <li><strong>Name:</strong> ${character?.name || "N/A"}</li>
+            <li><strong>Race:</strong> ${character?.race || "N/A"}</li>
+            <li><strong>Race Description:</strong> ${character?.raceDescription || "N/A"}</li>
+            <li><strong>Racial Bonus:</strong> ${character?.racialBonus || "N/A"}</li>
+            <li><strong>Racial Ability:</strong> ${character?.racialAbility || "N/A"}</li>
+            <li><strong>Racial Negative:</strong> ${character?.racialNegative || "N/A"}</li>
+            <li><strong>Starting Jinx:</strong> ${character?.startingJinx || "N/A"}</li>
+            <li><strong>Starting Origin Level:</strong> ${character?.startingLevel || "N/A"}</li>
+            <li><strong>HP Bonus:</strong> ${character?.hpBonus || "N/A"}</li>
+            <li><strong>Attack Prowess:</strong> ${character?.attackProwess || "N/A"}</li>
+            <li><strong>Defense Prowess:</strong> ${character?.defenseProwess || "N/A"}</li>
+            <li><strong>Age:</strong> ${character?.age || "N/A"}</li>
+            <li><strong>Origin:</strong> ${character?.origin || "N/A"}</li>
+            <li><strong>Origin Description:</strong> ${character?.originDescription || "N/A"}</li>
+            <li><strong>Origin Level 1 Bonus:</strong> ${character?.levelAbility || "N/A"}</li>
+            <li><strong>Starting Package:</strong> ${character?.startingPackage || "N/A"}</li>
+            <li><strong>Weapon Proficiency:</strong> ${character?.weaponProficiency || "N/A"}</li>
             </ul>
-      `
-
-
-
-
+            </div>
+            <li><strong>Focus:</strong> ${character?.focus || "N/A"}</li>
+            <li><strong>Goal:</strong> ${character?.goal || "N/A"}</li>
+            <li><strong>Flaw:</strong> ${character?.flaw || "N/A"}</li>
+            <li><strong>Strength:</strong> ${character?.strength || "N/A"}</li>
+            <li><strong>HP:</strong> ${character?.hp || "N/A"}</li>
+            <li><strong>Movement:</strong> Land – 5, Air – 7, and Water – 2</li>
+            <li><strong>Stats:</strong> 15 points to assign as you see fit (Average human has a 2 in each category).  Don't forget to add any Racial bonus, Racial negative, and potential bonus based on Origin/Level </li>
+            <ol>
+              <li>Strength – Added to Melee damage</li>
+              <li>Reflex – Added to Ranged damage</li>
+              <li>Fortitude – Damage Reduction / Mind Altering Effects</li>
+              <li>Intelligence – Added to Magic damage</li>
+              <li>Charisma – Bonus to all diplomacy, luck, and seduce checks (Percentiles)</li>
+            </ol>
+          </ul>
+        `;
+  
     const printElement = document.createElement('div');
     printElement.innerHTML = `
-      <html>
-        <head>
-          <title>Memoria Character Builder</title>
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bellefair&family=MedievalSharp&display=swap" rel="stylesheet">
-          <style>
-            /* Add your print styles here */
-            body { font-family: MedievalSharp, cursive;
-            }
-            h1 { color: #f4f4f4; }
-            h2 { text-align: center; }
-            img { width: 300px; height: auto; display: block; margin: 0 auto; }
-            li { font-size: 14px;}
-            div { display: flex; flex-direction: row align-items: center; }
-            .container { padding: 20px; }
-            /* ... other styles ... */
-          </style>
-        </head>
-        <body>
-          <img className="logo" src=${logo} alt="Memoria Logo" />
-          <h2>⚔ Character Build Cheatsheet ⚔</h2>
-          ${characterDetails}
-
-          <strong>Race and Origin</strong>
-         <div>
-          ${raceBreakdown}
-          ${originBreakdown}
-          </div>
-
-          <strong>Focus Power</strong>
-          ${focusBreakdown}
-
-          <strong>HP, Movement, and Stats</strong>
-          ${finalDetails}
-
-        </body>
-      </html>
+        <html>
+        <title>Memoria Character Builder</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=MedievalSharp&display=swap" rel="stylesheet">
+        <style>
+          /* Add your print styles here */
+          body { font-family: "MedievalSharp", cursive, serif; } /* Added fallback */
+          h2 { text-align: center; }
+          div { display: flex; justify-content: center; align-items: center; flex-direction: row; }
+          .character-details, .race-breakdown, .origin-breakdown, .final-details { list-style-type: none; }
+          .logo { width: 300px; height: auto; display: block; margin: 0 auto; }
+          .questionAnswer { margin-bottom: 10px; }
+        </style>
+            </head>
+            <body>
+                <img class="logo" src=${logo} alt="Memoria Logo" />
+                <h2>⚔ Character Build Cheatsheet ⚔</h2>
+                
+                ${characterDetails}
+                
+            </body>
+        </html>
     `;
- 
+  
     const printWindow = window.open('', '_blank');
     printWindow.document.write(printElement.innerHTML);
     printWindow.document.close();
     printWindow.focus();
- 
+  
     setTimeout(() => {
-      printWindow.print();
-    }, 200);
+        printWindow.print();
+    }, 500);
   };
 
   return (
@@ -231,11 +228,7 @@ function App() {
 
       {/* Display current answer */}
 
-     {/*  <div className="questionAnswer">
-        <p>
-          <strong>Your Answer:</strong> {answers[currentQuestion.id] || ''}
-        </p>
-      </div>
+
 
      
 
