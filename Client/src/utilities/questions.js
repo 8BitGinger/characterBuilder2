@@ -63,7 +63,6 @@ const questions = [
       'Troll',
       'Q',
       'Soulless',
-      'Demon',
       'Zarut',
       'Otorc',
       'Brinx',
@@ -73,7 +72,6 @@ const questions = [
       'Gonjic',
       'Jaddehb',
       'Polkans',
-      'Zadnaut',
       'Skorc',
       'Delvian',
       'Tib',
@@ -125,7 +123,7 @@ const questions = [
     type: 'select',
     options: [
       'Light',
-      'Teleportation',
+      'Teleportation - Not available yet',
       'Fire',
       'Air',
       'Mind',
@@ -135,9 +133,16 @@ const questions = [
       'Water',
     ],
   },
-  { id: 6, question: 'What is your Characters goal?', type: 'text' },
-  { id: 7, question: 'What is your Characters flaw?', type: 'text' },
-  { id: 8, question: 'What is your Characters strength?', type: 'text' },
+  { id:6, question: 'What is your gender?', type: 'select', options: [
+    'Male',
+    'Female',
+    'Other',
+  ],},
+  {
+    id:7,
+    question: 'Security Protocols Overide... Focus Powers Unlocked...Precheck ✓ ',
+  }
+  
 ];
 
 export default questions;
