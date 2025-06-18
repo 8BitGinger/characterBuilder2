@@ -2,23 +2,23 @@
 
 const minorItems = [
   "Minor Healing Potion",
-    "Minor Mana Potion", "Minor Stamina Potion", "Minor Strength Potion",]
+    "Minor Jinx Potion", "Minor Stamina Potion", "Minor Strength Potion",]
 
 const mediumItems = [
     "Medium Healing Potion",
-        "Medium Mana Potion", "Medium Stamina Potion", "Medium Strength Potion",]
+        "Medium Jinx Potion", "Medium Stamina Potion", "Medium Strength Potion",]
 
 const majorItems = [
     "Major Healing Potion",
-        "Major Mana Potion", "Major Stamina Potion", "Major Strength Potion",]
+        "Major Jinx Potion", "Major Stamina Potion", "Major Strength Potion",]
 
 const magicItems = [
     "Magic Healing Potion",
-        "Magic Mana Potion", "Magic Stamina Potion", "Magic Strength Potion",]
+        "Magic Jinx Potion", "Magic Stamina Potion", "Magic Strength Potion",]
 
 const consumables = [
     "Healing Potion",
-        "Mana Potion", "Stamina Potion", "Strength Potion",]
+        "Jinx Potion", "Stamina Potion", "Strength Potion",]
 
 const randomItems = {
     minorItems: minorItems,
