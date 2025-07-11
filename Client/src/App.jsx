@@ -8,7 +8,7 @@ import raceData from './utilities/racedata';
 import originData from './utilities/origindata';
 
 // Import assets
-import logo from './assets/memoria.png';
+import logo from './assets/Logo2025alt.png';
 import { GrPowerReset } from "react-icons/gr";
 import { VscDebugStart } from "react-icons/vsc";
 
@@ -106,9 +106,9 @@ import cuthImage from "./assets/Races/Cuth.jpg";
 import magelvImage from "./assets/Races/MagElf.jpg";
 import bisanuImage from "./assets/Races/Bisanu.jpg";
 import potecImage from "./assets/Races/Potec.jpg";
-import bandaImage from "./assets/Races/Banda.jpg";
+import bandaImage from "./assets/Races/banda.jpg";
 import cabatImage from "./assets/Races/Cabat.jpg";
-import cossakusImage from "./assets/Races/Cossakus.jpg";
+import cossakusImage from "./assets/Races/cossakus.jpg";
 
 const raceImages = {
     "Badgurix": badgurixImage,
@@ -322,7 +322,7 @@ function App() {
     const printElement = document.createElement('div');
     printElement.innerHTML = `
         <html>
-        <title>Memoria Character Builder</title>
+        <title>Cindervoid Character Builder</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Bellefair&family=MedievalSharp&display=swap" rel="stylesheet">
@@ -340,7 +340,7 @@ function App() {
             </head>
             <body>
             <div>
-                <aside><img class="logo" src=${logo} alt="Memoria Logo" />
+                <aside><img class="logo" src=${logo} alt="Cindervoid Logo" />
                                 <h2>⚔ Character Build Cheatsheet ⚔</h2>
 
                                 </aside>

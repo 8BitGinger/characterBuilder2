@@ -32,7 +32,7 @@ body {
   align-items: center;
   min-width: 100vw;
   min-height: 100vh;
-  background: linear-gradient(60deg, #080808 0%, rgba(15, 15, 15, 0.7) 50%, #080808e3 100%), url('./assets/wallpaper3.jpg');
+  background: linear-gradient(60deg, #080808 0%, rgba(15, 15, 15, 0.7) 50%, #080808e3 100%), url('./assets/Races/Gemini_Generated_Image_c81x03c81x03c81x.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -204,7 +204,7 @@ select:hover {
     place-items: center;
     min-width: 320px;
     min-height: 100vh;
-    background: url('./assets/wallpaper.jpg') no-repeat center center fixed;
+    background: url('./assets/wand.jpg') no-repeat center center fixed;
     background-size: cover;
   }
 }
